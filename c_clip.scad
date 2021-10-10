@@ -10,7 +10,7 @@ $height = 6;
 $diameter = 15;
 $innerDiameter = 9;
 
-module pieSlice(a, r, h){
+module pieSlice(a, r, h) {
   // a:angle, r:radius, h:height
   rotate_extrude(angle=a)
     square([r,h]);
@@ -27,16 +27,19 @@ difference()
     cylinder(r=$innerDiameter/2, h=$height+$tolerance, center=true);
 
     // cut out a slice
+    $isocelesLeg = 20;
+    $isocelesVertexAngle = 25;
     difference()
     {
-        $shift = (20 - $diameter/2) / sqrt(2);
+        $shift = ($isocelesLeg - $diameter/2) / sqrt(2);
         // the slice
         translate([-$shift, -$shift, -($height/2 + $tolerance/2)])
-        rotate(45-12.5)
-            pieSlice(25, 20, $height+$tolerance);
+            rotate(45 - $isocelesVertexAngle/2)
+            pieSlice($isocelesVertexAngle, $isocelesLeg, $height+$tolerance);
 
         // don't cut out stuff in Q3
-        translate([-50, -50, -25])
-          cube([50, 50, 50]);
+        $unit = 50;
+        translate([-$unit, -$unit, -$unit/2])
+            cube([$unit, $unit, $unit]);
     }
 }
