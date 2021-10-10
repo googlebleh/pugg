@@ -27,6 +27,16 @@ difference()
     cylinder(r=$innerDiameter/2, h=$height+$tolerance, center=true);
 
     // cut out a slice
-    translate([0, 0, -($height/2 + $tolerance/2)])
-        pieSlice(70, $radius+$tolerance, $height+$tolerance);
+    difference()
+    {
+        $shift = (20 - $diameter/2) / sqrt(2);
+        // the slice
+        translate([-$shift, -$shift, -($height/2 + $tolerance/2)])
+        rotate(45-12.5)
+            pieSlice(25, 20, $height+$tolerance);
+
+        // don't cut out stuff in Q3
+        translate([-50, -50, -25])
+          cube([50, 50, 50]);
+    }
 }
