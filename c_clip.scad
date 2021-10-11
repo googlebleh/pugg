@@ -1,6 +1,6 @@
 // rendering resolution
 $fa = 1;
-$fs = 0.4;
+$fs = 0.1;
 
 // always cut a little more than you need to
 $tolerance = 0.1;
@@ -11,9 +11,9 @@ $diameter = 15;
 $innerDiameter = 9;
 
 module pieSlice(a, r, h) {
-  // a:angle, r:radius, h:height
-  rotate_extrude(angle=a)
-    square([r,h]);
+    // a:angle, r:radius, h:height
+    rotate_extrude(angle=a)
+        square([r, h]);
 }
 
 difference()
@@ -31,7 +31,7 @@ difference()
     $isocelesVertexAngle = 25;
     difference()
     {
-        $shift = ($isocelesLeg - $diameter/2) / sqrt(2);
+        $shift = ($isocelesLeg - $radius) / sqrt(2);
         // the slice
         translate([-$shift, -$shift, -($height/2 + $tolerance/2)])
             rotate(45 - $isocelesVertexAngle/2)
@@ -43,3 +43,8 @@ difference()
             cube([$unit, $unit, $unit]);
     }
 }
+
+// nub to align with hole on goal frame
+$sphereShift = ($innerDiameter/2) / sqrt(2);
+translate([-$sphereShift, -$sphereShift, 0])
+    sphere(r=1);
